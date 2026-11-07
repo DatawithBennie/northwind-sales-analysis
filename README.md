@@ -58,4 +58,4 @@ I also created DAX measures for Total Revenue, Total Orders, Average Order Value
 the results to ensure consistency.
 
 ## Power BI Dashboard Preview
-![ Northwind Sales Dasboard] (./Images/Northwind_Dashboard.png)
+![ Northwind Sales Dasboard] (./Images/Northwind%20Dashboard.png)
