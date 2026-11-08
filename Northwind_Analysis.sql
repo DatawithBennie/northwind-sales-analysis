@@ -107,6 +107,11 @@ SELECT
     COUNT(DISTINCT o.order_id) AS Total_orders,
 	SUM( unit_price * quantity *(1-discount)) AS Total_revenue,
 	EXTRACT (YEAR FROM order_date) AS Order_year
+	---CASE 
+	  -- WHEN order_date <= '2013-12-31' THEN '2013'
+	 --WHEN order_date <= '2014-12-31' THEN '2014'
+	 --ELSE '2015'
+	 --END AS Order_year
 FROM product_data AS p 
 INNER JOIN order_details_data AS od ON p.product_id = od.product_id
 INNER JOIN order_data AS o ON o.order_id = od.order_id
@@ -122,10 +127,10 @@ SELECT product_name,
   FROM product_data AS p 
  INNER JOIN order_details_data AS od
  ON p.product_id = od.product_id
-GROUP BY product_name, od.quantity
---ORDER BY total_quantity,total_revenue DESC 
-  ORDER BY total_quantity,total_revenue ASC;
-  
+GROUP BY product_name
+ ORDER BY total_quantity DESC 
+  --ORDER BY total_quantity ASC
+   LIMIT 5;
 
 3
 
@@ -137,7 +142,8 @@ INNER JOIN order_data AS o ON c.customer_id = o.customer_id
 INNER JOIN order_details_data AS od on o.order_id = od.order_id
 INNER JOIN product_data AS p ON od.product_id = p.product_id
 GROUP BY c.customer_id
-ORDER BY Total_revenue DESC;
+ORDER BY Total_revenue DESC
+LIMIT 5;
 
 4
 
@@ -152,12 +158,18 @@ INNER JOIN order_data AS o ON s.shipper_id = o.shipper_id
 GROUP BY company_name;
   
 
+ SELECT *
+ 
 
 5
 
-SELECT shipped_date, required_date,
+SELECT delivery_status,
+    COUNT(*) AS total_orders
+FROM( SELECT shipped_date, required_date,
     CASE 
 	   WHEN shipped_date <= required_date THEN 'On time'
 	   ELSE 'Late'
 	   END AS delivery_status
-FROM order_data;
+FROM order_data) AS delivery_status
+GROUP BY delivery_status;
+
